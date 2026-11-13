@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0f14">
+<title>Baseplate Drive — 30 fps driving simulator</title>
+<meta name="description" content="A realistic flat-baseplate driving simulator: raycast suspension, weight transfer, tyre slip, manual gearbox, skid marks and procedural engine audio. 30 fps target.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0f14'/%3E%3Cpath d='M12 40c3-8 8-12 20-12s17 4 20 12l-2 4H14z' fill='%23ff4d3d'/%3E%3Ccircle cx='21' cy='45' r='5' fill='%23e8f4ff'/%3E%3Ccircle cx='43' cy='45' r='5' fill='%23e8f4ff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="app">
+  <canvas id="scene" aria-label="3D driving simulation"></canvas>
+
+  <div id="hud" class="is-hidden">
+    <div class="hud-brand">
+      <b>BASEPLATE</b><span>DRIVE</span>
+      <em id="transMode">AUTO</em>
+    </div>
+
+    <div class="hud-perf">
+      <div id="fps" class="perf-pill">-- FPS</div>
+      <div id="quality" class="perf-pill perf-sub">HIGH</div>
+    </div>
+
+    <div class="hud-gauge">
+      <svg id="dial" viewBox="0 0 220 220" aria-hidden="true"></svg>
+      <div class="dial-needle" id="needle"></div>
+      <div class="dial-read">
+        <b id="speed">0</b>
+        <span>km/h</span>
+      </div>
+      <div class="dial-gear" id="gear">N</div>
+    </div>
+
+    <div class="hud-stats">
+      <div class="stat"><span>RPM</span><b id="rpm">900</b></div>
+      <div class="rpm-track"><i id="rpmFill"></i></div>
+      <div class="stat"><span>G-LAT</span><b id="glat">0.00</b></div>
+      <div class="stat"><span>G-LON</span><b id="glon">0.00</b></div>
+      <div class="stat"><span>STEER</span><b id="steer">0°</b></div>
+    </div>
+
+    <div class="hud-pedals">
+      <div class="pedal"><i id="throttleFill"></i><span>THR</span></div>
+      <div class="pedal pedal-brake"><i id="brakeFill"></i><span>BRK</span></div>
+      <div class="tyre" id="tyreState">GRIP</div>
+    </div>
+
+    <div class="hud-help">
+      <span><b>W/S</b> throttle / brake</span>
+      <span><b>A/D</b> steer</span>
+      <span><b>Space</b> handbrake</span>
+      <span><b>E/Q</b> shift</span>
+      <span><b>T</b> auto / manual</span>
+      <span><b>C</b> camera</span>
+      <span><b>R</b> reset</span>
+      <span><b>M</b> mute</span>
+    </div>
+  </div>
+
+  <div id="start" class="start">
+    <div class="start-card">
+      <div class="start-kicker">REAL-TIME VEHICLE PHYSICS</div>
+      <h1>BASEPLATE<br><span>DRIVE</span></h1>
+      <p class="start-lead">A flat baseplate. One car. Proper suspension, tyre slip, weight transfer and a six-speed gearbox — held at a consistent 30 fps.</p>
+      <div class="start-specs">
+        <div><b>1,380 kg</b><span>kerb weight</span></div>
+        <div><b>RWD</b><span>rear drive</span></div>
+        <div><b>6-speed</b><span>auto or manual</span></div>
+        <div><b>30 fps</b><span>locked target</span></div>
+      </div>
+      <button id="startBtn" type="button">START ENGINE</button>
+      <div class="start-note">Sound on · click the canvas to focus · <kbd>Esc</kbd> pauses</div>
+    </div>
+  </div>
+
+  <div id="pause" class="pause is-hidden">
+    <div class="pause-card">
+      <h2>PAUSED</h2>
+      <p>Click resume to get back on the plate.</p>
+      <button id="resumeBtn" type="button">RESUME</button>
+    </div>
+  </div>
+
+  <div id="loading" class="loading">
+    <div class="loading-inner">
+      <div class="loading-bar"><i></i></div>
+      <span id="loadingText">Loading physics…</span>
+    </div>
+  </div>
+</div>
+<script type="module" src="main.js"></script>
+</body>
+</html>
